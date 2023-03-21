@@ -40,3 +40,5 @@ Note: there are a lot of places to improve in my code. I will do it later.
 - https://www.mathworks.com/help/deeplearning/ug/denoise-speech-using-deep-learning-networks.html
 - https://www.kaggle.com/code/danielgraham1997/speech-denoising-analysis#Metrics-Analysis
 - https://www.kaggle.com/code/carlolepelaars/bidirectional-lstm-for-audio-labeling-with-keras/notebook
+- https://www.kaggle.com/datasets/chrisfilo/urbansound8k
+- https://commonvoice.mozilla.org/
