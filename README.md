@@ -1,7 +1,7 @@
 
 # CNN for speech enhancement (baseline model)
 
-This project is part of my homework on [My first data project](https://ods.ai/tracks/my_first_data_project) course
+This project is the part of my homework in [My first data project](https://ods.ai/tracks/my_first_data_project) course
 
 
 
