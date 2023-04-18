@@ -1,8 +1,6 @@
 
 # CNN for speech denoising
-
-This project is the part of my homework in [My first data project](https://ods.ai/tracks/my_first_data_project) course
-This project is part of my homework on [My first data project](https://ods.ai/tracks/my_first_data_project) course.
+Домашнее задание по курсу [My first data project](https://ods.ai/tracks/my_first_data_project).
 
 Основная цель представленного проекта - решить задачу очистки речи от фоновых шумов, используя технологии машинного обучения.
 
@@ -21,7 +19,7 @@ This project is part of my homework on [My first data project](https://ods.ai/tr
 - cnn_model_test - демонстрация работы модели на любом аудио.
 - prepare_dataset - ноутбук для преобразования данных для модели. Версия тут - обработка единственной аудиозаписи.
 
-И нескольких .py файлов: по сути простой перенос cnn_model_final в нормальный вид.
+И нескольких .py файлов: приведение cnn_model_final в нормальный вид.
 
 speech_model.h5 - самая последняя версия обученной модели.
 
@@ -37,25 +35,6 @@ speech_model.h5 - самая последняя версия обученной 
 
 Детали описаны в статье [1], ссылка в конце документа.
 
-
-## Testing
-[Example 1](https://drive.google.com/drive/folders/1-5wGQ1fpA0poQMsjk5xdNzo99HKL01lp?usp=sharing):
-
-- STOI: 0.7485873492849783
-- SDR: 11.094792287825626
-
-![Screenshot from 2023-03-21 12-10-12](https://user-images.githubusercontent.com/63301430/226561548-743503a6-c1c2-42dc-a7f5-a0f7a2a508e5.png)
-![Screenshot from 2023-03-21 12-10-23](https://user-images.githubusercontent.com/63301430/226561551-b33b70f7-f699-4879-a481-b6cf86470f31.png)
-![Screenshot from 2023-03-21 12-10-28](https://user-images.githubusercontent.com/63301430/226561554-a6e60551-fac5-4cce-a79f-03731b4b90a5.png)
-
-[Example 2](https://drive.google.com/drive/folders/1-5wGQ1fpA0poQMsjk5xdNzo99HKL01lp?usp=sharing):
-
-- STOI: 0.5552426231950904
-- SDR: 6.131914852996063
-
-![Screenshot from 2023-03-21 12-15-12](https://user-images.githubusercontent.com/63301430/226562559-49c322a3-66df-4c48-886a-ddcc3c02cc1a.png)
-![Screenshot from 2023-03-21 12-15-18](https://user-images.githubusercontent.com/63301430/226562563-de83326d-36c4-46af-aac9-bea6fdec9fee.png)
-![Screenshot from 2023-03-21 12-15-23](https://user-images.githubusercontent.com/63301430/226562569-27601b24-8d6d-4be8-bc8c-f0099023370e.png)
 ## Подбор гиперпараметров
 
 Сперва стоит отметить, что автор работы столкнулся с техническими ограничениями и не смог организовать обучение моделей с большей вариативностью в значениях гиперпараметров. Эксперименты будут продолжены.
@@ -110,21 +89,7 @@ speech_model.h5 - самая последняя версия обученной 
 ## References
 - https://paperswithcode.com/paper/a-fully-convolutional-neural-network-for
 - https://habr.com/ru/post/668518/
-- https://www.youtube.com/watch?v=ZqpSb5p1xQo&list=WL&index=8&t=1072s
-- https://www.mathworks.com/help/deeplearning/ug/denoise-speech-using-deep-learning-networks.html
-- https://www.kaggle.com/code/danielgraham1997/speech-denoising-analysis#Metrics-Analysis
-- https://www.kaggle.com/code/carlolepelaars/bidirectional-lstm-for-audio-labeling-with-keras/notebook
-- https://www.kaggle.com/datasets/chrisfilo/urbansound8k
-- https://commonvoice.mozilla.org/
-
-##  Примеры
-
-Примеры могут быть найдены в соответствующей папке репозитория.
-
-## References
-- https://paperswithcode.com/paper/a-fully-convolutional-neural-network-for
 - https://habr.com/ru/companies/antiplagiat/articles/528384/
-- https://habr.com/ru/post/668518/
 - https://www.youtube.com/watch?v=ZqpSb5p1xQo&list=WL&index=8&t=1072s
 - https://www.mathworks.com/help/deeplearning/ug/denoise-speech-using-deep-learning-networks.html
 - https://www.kaggle.com/code/danielgraham1997/speech-denoising-analysis#Metrics-Analysis
