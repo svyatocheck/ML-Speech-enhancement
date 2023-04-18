@@ -1,0 +1,25 @@
+artifacts/run_1ipfni1p_model:v31/fingerprint.pb
+artifacts/run_1ipfni1p_model:v31/keras_metadata.pb
+artifacts/run_1ipfni1p_model:v31/saved_model.pb
+artifacts/run_1ipfni1p_model:v31/variables/variables.data-00000-of-00001
+artifacts/run_1ipfni1p_model:v31/variables/variables.index
+artifacts/run_bn3o9sck_model:v23/fingerprint.pb
+artifacts/run_bn3o9sck_model:v23/keras_metadata.pb
+artifacts/run_bn3o9sck_model:v23/saved_model.pb
+artifacts/run_bn3o9sck_model:v23/variables/variables.data-00000-of-00001
+artifacts/run_bn3o9sck_model:v23/variables/variables.index
+__pycache__/get_model.cpython-310.pyc
+models/fingerprint.pb
+models/keras_metadata.pb
+models/saved_model.pb
+models/variables/variables.data-00000-of-00001
+models/variables/variables.index
+
+# Secret file
+.env
+speech_older_env/
+wandb/
+models/
+artifacts/
+__pycache__/
+.vscode/settings.json
