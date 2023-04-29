@@ -1,0 +1,3 @@
+[submodule "ML-speech-denoiser-docker"]
+	path = ML-speech-denoiser-docker
+	url = https://github.com/Svyatocheck/ML-speech-denoiser-docker
