@@ -2,7 +2,7 @@ import tensorflow as tf
 import wandb
 from wandb.keras import WandbMetricsLogger, WandbModelCheckpoint
 import numpy as np
-from cnn_denoising.config import *
+from src.cnn_denoising.config import *
 import math
 import os
 

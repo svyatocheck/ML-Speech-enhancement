@@ -2,7 +2,7 @@ import librosa
 import numpy as np
 import os
 from tqdm import tqdm
-from crnn_denoising.config import *
+from src.crnn_denoising.config import *
 
 class FeatureInputGenerator:
 

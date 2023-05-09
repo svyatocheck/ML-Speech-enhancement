@@ -1,5 +1,5 @@
 import wandb
-from crnn_denoising.config import *
+from src.crnn_denoising.config import *
 from wandb.keras import WandbMetricsLogger, WandbModelCheckpoint
 import tensorflow as tf
 import numpy as np

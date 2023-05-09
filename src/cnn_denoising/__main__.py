@@ -1,4 +1,4 @@
-from cnn_denoising.config import *
+from src.cnn_denoising.config import *
 from src.cnn_denoising.models import SpeechModel
 from src.cnn_denoising.features import FeatureInputGenerator
 from glob import glob
