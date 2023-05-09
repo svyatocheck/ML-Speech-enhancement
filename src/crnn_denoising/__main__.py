@@ -1,6 +1,6 @@
 from src.crnn_denoising.models import SpeechModel
 from src.crnn_denoising.features import FeatureInputGenerator
-from src.crnn_denoising.configs import *
+from crnn_denoising.config import *
 from glob import glob
 import random
 import math

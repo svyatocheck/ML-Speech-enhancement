@@ -1,4 +1,4 @@
-from src.cnn_denoising.configs import *
+from cnn_denoising.config import *
 import librosa
 import numpy as np
 import os

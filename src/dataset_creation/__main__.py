@@ -6,7 +6,7 @@ import soundfile as sf
 import os
 from tqdm import tqdm
 import warnings
-from src.dataset_creation.configs import *
+from src.dataset_creation.config import *
 
 '''Data preparation script. You need to configure paths, snr and other parameters on your own before launch it.'''
 
