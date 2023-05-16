@@ -14,7 +14,7 @@ np.random.seed(999)
 
 class SpeechModel:
 
-    def __init__(self, scratch) -> None:
+    def __init__(self) -> None:
         self._define_wandb_config()
         self._compile(scratch=False)
 
@@ -42,7 +42,7 @@ class SpeechModel:
             self.model = self._create_model()
         else:
             try:
-                self.model = tf.keras.models.load_model('speech_model.h5')
+                self.model = tf.keras.models.load_model('src/cnn_denoising/models/speech_model.h5')
             except:
                 print("No model in current directory. Aborting.")
                 exit

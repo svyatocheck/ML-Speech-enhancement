@@ -77,8 +77,8 @@ class FeatureInputGenerator:
     
     
     def _calculate_means(self, spectrogram):
-        '''Необходимый в предобработке звукового сигнала этап.
-        Взят из статьи 1609.'''
+        '''Preprocessing step for sound signal. 
+        Taken from article 1609'''
         stft_feature = np.abs(spectrogram)
         mean = np.mean(stft_feature)
         std = np.std(stft_feature)

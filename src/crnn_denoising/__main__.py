@@ -14,19 +14,15 @@ def prepare_data(generator: FeatureInputGenerator, files_type):
 
 
 def execute_main():
-    # train_size = int(input("Train dataset size: "))
     train_size = 512
-    validation_size = math.floor((train_size * 10) / 100)
+    validation_size = math.floor((train_size * 20) / 100)
     test_size = validation_size
 
     train_files = glob(f'{DATA_PATH}/input/noisy_train/*.wav')
-    test_files = glob(f'{DATA_PATH}/input/noisy_test/*.wav')
 
     random.shuffle(train_files)
-    random.shuffle(test_files)
 
     train_files = train_files[:train_size + validation_size]
-    test_files = test_files[:test_size]
     validation_files = train_files[:validation_size]
     train_files = train_files[validation_size:]
 
@@ -37,8 +33,13 @@ def execute_main():
 
     model = SpeechModel()
     model.train(x_train, y_train, x_val, y_val)
-
+    
+    test_files = glob(f'{DATA_PATH}/input/noisy_test/*.wav')
+    random.shuffle(test_files)
+    test_files = test_files[:test_size]
     x_test, y_test = prepare_data(generator, test_files)
+    #model.show_architecture()
+
     model.evaluate(x_test, y_test)
 
     # model.save() # WanDB saves model automatically

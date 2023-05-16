@@ -38,13 +38,13 @@ def read_audio_file(audio_file, sample_rate):
     return audio
 
 
-def audio_preparation(speech_files, noise_files, result_path):
+def audio_preparation(speech_files, noise_files, result_path, size):
     np.random.shuffle(noise_files)
     np.random.shuffle(speech_files)
 
     files_to_remove = list()    # remove bad audios
 
-    for items in tqdm(speech_files[:10000]):  # Change count of prepared audios
+    for items in tqdm(speech_files[:size]):  # Change count of prepared audios
 
         with warnings.catch_warnings():
             warnings.filterwarnings('error')
@@ -63,7 +63,7 @@ def audio_preparation(speech_files, noise_files, result_path):
                 continue
 
             # make audio noisy, change SNR value here
-            audio = mix_audio(audio, noise, random.randrange(0, 50, 10))
+            audio = mix_audio(audio, noise, random.randrange(0, 30, 10))
 
             fileName_absolute = os.path.splitext(os.path.basename(items))[0]
             filename_full = f'{result_path}{fileName_absolute}.wav'
@@ -75,14 +75,13 @@ def audio_preparation(speech_files, noise_files, result_path):
 
 
 def execute_main():
-    speech_files = glob(f'{CLEAN_TRAIN}/*.wav') + \
-        glob(f'{SPEECH_DATASET}/*.wav')
-    noise_files = glob(f'{NOISE_TRAIN}*.wav')
-    audio_preparation(speech_files, noise_files, RESULT_DATASET_TRAIN)
+    speech_files = glob(f'{SPEECH_DATASET}*.mp3') + glob(f'{CLEAN_TRAIN}*.wav')
+    noise_files = glob(f'{NOISE_TRAIN}*/*.wav')
+    audio_preparation(speech_files, noise_files, RESULT_DATASET_TRAIN, 3000)
 
     speech_files = glob(f'{CLEAN_TEST}*.wav')
     noise_files = glob(f'{NOISE_TEST}*.wav')
-    audio_preparation(speech_files, noise_files, RESULT_DATASET_TEST)
+    audio_preparation(speech_files, noise_files, RESULT_DATASET_TEST, 3000)
 
 
 if __name__ == '__main__':

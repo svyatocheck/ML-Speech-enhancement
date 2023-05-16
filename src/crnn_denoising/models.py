@@ -20,17 +20,17 @@ class SpeechModel:
     def _define_wandb_config(self):
         '''Инициализация платформы для прототипирования моделей.
         Содержит большинство гиперпараметров.'''
+        
+        # track hyperparameters and run metadata with wandb.config
         self.run = wandb.init(
-            # set the wandb project where this run will be logged
             project="crnn_denoising",
-            # track hyperparameters and run metadata with wandb.config
             config={
                 "loss": "mse",
                 "metric": "mae",
                 "optimizer": "adam",
                 "epoch": 10,
                 "batch_size": 64,
-                "learning_rate": 0.002
+                "learning_rate": 0.0015
             }, mode='online'
         )
         self.config = wandb.config
@@ -49,7 +49,7 @@ class SpeechModel:
                 validation_data=(x_val, y_val),
                 callbacks=[
                     WandbMetricsLogger(log_freq=5),
-                    WandbModelCheckpoint("models/speech_model.h5", save_best_only=True),
+                    WandbModelCheckpoint("src/crnn_denoising/models/speech_model.h5", save_best_only=True),
                     learning_rate_scheduler,
                     early_stopping_callback
                 ]
@@ -72,7 +72,7 @@ class SpeechModel:
     def save(self):
         '''Сохранение модели на платформу для прототипирования и в текущую директорию.'''
         try:
-            wandb.save('model.h5')
+            #wandb.save('model.h5')
             self.model.save('speech_model.h5')
             print('Model saved successfully!')
         except AttributeError:
@@ -92,7 +92,7 @@ class SpeechModel:
     def _step_decay(self, epoch):
         initial_lrate = self.config.learning_rate
         drop = 0.75
-        epochs_drop = 3.0
+        epochs_drop = 5.0
         lrate = initial_lrate * math.pow(drop, math.floor((1+epoch)/epochs_drop))
         return lrate
 
@@ -102,7 +102,7 @@ class SpeechModel:
             self.model = self._create_model()
         else:
             # Доработаю этот момент позже.
-            self.model = tf.keras.models.load_model('models/test.h5')
+            self.model = tf.keras.models.load_model('src/crnn_denoising/models/speech_model.h5')
             
         optimizer = tf.keras.optimizers.Adam(learning_rate=self.config.learning_rate)
         
@@ -116,7 +116,7 @@ class SpeechModel:
         crnn_first = self._make_first_part(input_first)
         crnn_second = self._make_first_part(input_first)
         # ---
-        concatenated = tf.keras.layers.Concatenate()([crnn_first, crnn_second])
+        concatenated = tf.keras.layers.Add()([crnn_first, crnn_second])
 
         # Fully connected layers
         dense_1 = tf.keras.layers.Dense(257, activation=tf.nn.relu, use_bias=True)(concatenated)
@@ -155,7 +155,9 @@ class SpeechModel:
                        conv4.shape[2] * conv4.shape[3]])
 
         lstm_fw_cell_1 = tf.keras.layers.LSTM(33, return_sequences=True, activation=tf.nn.relu)(x)
-        lstm_fw_cell_2 = tf.keras.layers.LSTM(33, return_sequences=True, activation=tf.nn.relu)(lstm_fw_cell_1)
+        drop_one = tf.keras.layers.Dropout(0.2)(lstm_fw_cell_1)
+        lstm_fw_cell_2 = tf.keras.layers.LSTM(33, return_sequences=True, activation=tf.nn.relu)(drop_one)
+        drop_two = tf.keras.layers.Dropout(0.2)(lstm_fw_cell_2)
         # ---
-        flatten = tf.keras.layers.Flatten()(lstm_fw_cell_2)
+        flatten = tf.keras.layers.Flatten()(drop_two)
         return flatten
