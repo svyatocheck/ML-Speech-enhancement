@@ -76,7 +76,7 @@
 
 #### CRNN
 
-<img src=https://github.com/Svyatocheck/ML-Speech-enhancement/assets/63301430/57b8640f-9a5d-4cd6-acf4-af8b273fa1d5 width=220>
+<img src=https://github.com/Svyatocheck/ML-Speech-enhancement/assets/63301430/9b62055c-67d1-46d3-8845-2ec5ef564401 width=220>
 
 Вдохновлением при проектировании данной н.с. послужило другое исследование [2]. Там не так подробно расписано о ее устройстве, поэтому есть очень много пространства для творчества. 
 Причины, по которым я взял эту архитектуру:
