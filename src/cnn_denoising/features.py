@@ -5,7 +5,7 @@ import os
 from tqdm import tqdm
 
 
-class FeatureInputGenerator:
+class FeatureExtractor:
 
     def start_preprocess(self, audio_files):
         '''Предобработка данных для нейронной сети.
@@ -45,23 +45,39 @@ class FeatureInputGenerator:
         return np.concatenate(x_predictors).astype(np.float32), np.concatenate(y_predictors).astype(np.float32)
 
     def _make_spectrograms(self, audio, clean=False):
-        '''Создание STFT диаграмм.'''
+        """
+        This function takes in an audio file and generates spectrograms using the librosa library.
+        :param audio_path: path to audio file
+        :param normalize: whether or not to normalize the spectrograms
+        :return: spectrogram
+        """
         audio = self._read_audio_files(audio, clean)
-        stft = librosa.stft(y=audio, n_fft=N_FFT,
+        stft = librosa.stft(y=audio, n_fft=N_FFT, win_length = WINDOW_LENGTH,
                             hop_length=OVERLAP, center=True, window='hamming')
         return stft
 
-    def _read_audio_files(self, path, normalize):
-        '''Загрузка, удаление тихих участков из аудио файла, нормализация.'''
-        audio, _ = librosa.load(path, sr=SAMPLE_RATE)
+
+    def _read_audio_files(self, audio_path, normalize):
+        """
+        This function takes in an audio file and normalize it 
+        :param audio_path: path to audio file
+        :param normalize: whether or not to normalize the spectrograms
+        :return: audio
+        """
+        audio, _ = librosa.load(audio_path, sr=SAMPLE_RATE)
         if normalize:
             audio, _ = librosa.effects.trim(audio)
             div_fac = 1 / np.max(np.abs(audio)) / 3.0
             audio = audio * div_fac
         return audio
 
+
     def _load_clean(self, name):
-        '''Поиск исходной аудиозаписи по заданным директориям.'''
+        """
+        This function takes in an audio file name and returns it path in data directories
+        :param name: path to audio file
+        :return: audio_path
+        """
         abs_path_one = os.path.join(SPEECH_DATASET, f'{name}.mp3')
         abs_path_two = os.path.join(CLEAN_TRAIN, f'{name}.wav')
         abs_path_three = os.path.join(CLEAN_TEST, f'{name}.wav')
@@ -76,17 +92,24 @@ class FeatureInputGenerator:
             raise Exception(f'No clean file {name} for the noisy file.')
 
     def _calculate_means(self, spectrogram):
-        '''Необходимый в предобработке звукового сигнала этап.
-        Взят из статьи 1609.'''
+        '''
+        Important step to avoid extreme differences (more than 45 degree) between the noisy and clean phase, and perform in-verse STFT and recover human speech later.
+        :param spectrogram: audio spectrogram in numpy array
+        :return: encoded spectrogram
+        Taken from article 1609.07132
+        '''
         stft_feature = np.abs(spectrogram)
         mean = np.mean(stft_feature)
         std = np.std(stft_feature)
         return (stft_feature - mean) / std
 
-    def _prepare_input_features(self, items):
-        '''Формирование векторов из STFT диаграмм.'''
+    def _prepare_input_features(self, spectrograms):
+        '''
+        Feature extraction from STFT spectrograms.
+        :param spectrogram: audio spectrogram in numpy array
+        '''
         stft_feature = np.concatenate(
-            [items[:, 0:N_SEGMENTS-1], items], axis=1)
+            [spectrograms[:, 0:N_SEGMENTS-1], spectrograms], axis=1)
         stft_segments = np.zeros(
             (N_FEATURES, N_SEGMENTS, stft_feature.shape[1] - N_SEGMENTS + 1))
         for index in range(stft_feature.shape[1] - N_SEGMENTS + 1):
@@ -95,7 +118,11 @@ class FeatureInputGenerator:
         return stft_segments
 
     def _reshape_predictors(self, items):
-        '''Решейп векторов в требуемый НС формат.'''
+        '''
+        Function to reshape features for NN
+        :param items: numpy array - features
+        :return: numpy array - prepared features [?, 255, 1, 1]
+        '''
         predictors = np.reshape(
             items, (items.shape[0], items.shape[1], 1, items.shape[2]))
         predictors = np.transpose(predictors, (3, 0, 1, 2)).astype(np.float32)

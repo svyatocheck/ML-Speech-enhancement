@@ -14,9 +14,9 @@ def prepare_data(generator: FeatureInputGenerator, files_type):
 
 
 def execute_main():
-    train_size = 512
-    validation_size = math.floor((train_size * 20) / 100)
-    test_size = validation_size
+    train_size = 1024
+    validation_size = math.floor((train_size * 10) / 100)
+    test_size = math.floor((train_size * 20) / 100)
 
     train_files = glob(f'{DATA_PATH}/input/noisy_train/*.wav')
 

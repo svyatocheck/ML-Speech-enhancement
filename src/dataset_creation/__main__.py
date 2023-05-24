@@ -77,11 +77,11 @@ def audio_preparation(speech_files, noise_files, result_path, size):
 def execute_main():
     speech_files = glob(f'{SPEECH_DATASET}*.mp3') + glob(f'{CLEAN_TRAIN}*.wav')
     noise_files = glob(f'{NOISE_TRAIN}*/*.wav')
-    audio_preparation(speech_files, noise_files, RESULT_DATASET_TRAIN, 3000)
+    audio_preparation(speech_files, noise_files, RESULT_DATASET_TRAIN, 20000)
 
     speech_files = glob(f'{CLEAN_TEST}*.wav')
     noise_files = glob(f'{NOISE_TEST}*.wav')
-    audio_preparation(speech_files, noise_files, RESULT_DATASET_TEST, 3000)
+    audio_preparation(speech_files, noise_files, RESULT_DATASET_TEST, 500)
 
 
 if __name__ == '__main__':

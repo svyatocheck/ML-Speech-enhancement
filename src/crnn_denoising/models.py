@@ -28,10 +28,10 @@ class SpeechModel:
                 "loss": "mse",
                 "metric": "mae",
                 "optimizer": "adam",
-                "epoch": 10,
+                "epoch": 50,
                 "batch_size": 64,
-                "learning_rate": 0.0015
-            }, mode='online'
+                "learning_rate": 0.001
+            }, mode='offline'
         )
         self.config = wandb.config
 
@@ -40,7 +40,6 @@ class SpeechModel:
         '''Запуск процесса обучения. На вход подаются вектора формата (?, 257, 1, 1)'''
         try:
             early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=4, mode="min", restore_best_weights=True)
-            learning_rate_scheduler = tf.keras.callbacks.LearningRateScheduler(self._step_decay)
             history = self.model.fit(
                 x=x_train,
                 y=y_train,
@@ -50,7 +49,6 @@ class SpeechModel:
                 callbacks=[
                     WandbMetricsLogger(log_freq=5),
                     WandbModelCheckpoint("src/crnn_denoising/models/speech_model.h5", save_best_only=True),
-                    learning_rate_scheduler,
                     early_stopping_callback
                 ]
             )
@@ -72,7 +70,6 @@ class SpeechModel:
     def save(self):
         '''Сохранение модели на платформу для прототипирования и в текущую директорию.'''
         try:
-            #wandb.save('model.h5')
             self.model.save('speech_model.h5')
             print('Model saved successfully!')
         except AttributeError:
@@ -88,15 +85,15 @@ class SpeechModel:
             print(
                 "There is error with evaluation. Are you sure that this class has the trained model now?")
     
-    # learning rate schedule
-    def _step_decay(self, epoch):
-        initial_lrate = self.config.learning_rate
-        drop = 0.75
-        epochs_drop = 5.0
-        lrate = initial_lrate * math.pow(drop, math.floor((1+epoch)/epochs_drop))
-        return lrate
+    # # learning rate schedule
+    # def _step_decay(self, epoch):
+    #     initial_lrate = self.config.learning_rate
+    #     drop = 0.75
+    #     epochs_drop = 5.0
+    #     lrate = initial_lrate * math.pow(drop, math.floor((1+epoch)/epochs_drop))
+    #     return lrate
 
-    def _compile(self, scratch = False):
+    def _compile(self, scratch = True):
         '''Создание модели.'''
         if scratch:
             self.model = self._create_model()
@@ -155,9 +152,9 @@ class SpeechModel:
                        conv4.shape[2] * conv4.shape[3]])
 
         lstm_fw_cell_1 = tf.keras.layers.LSTM(33, return_sequences=True, activation=tf.nn.relu)(x)
-        drop_one = tf.keras.layers.Dropout(0.2)(lstm_fw_cell_1)
+        drop_one = tf.keras.layers.Dropout(0.1)(lstm_fw_cell_1)
         lstm_fw_cell_2 = tf.keras.layers.LSTM(33, return_sequences=True, activation=tf.nn.relu)(drop_one)
-        drop_two = tf.keras.layers.Dropout(0.2)(lstm_fw_cell_2)
+        drop_two = tf.keras.layers.Dropout(0.1)(lstm_fw_cell_2)
         # ---
         flatten = tf.keras.layers.Flatten()(drop_two)
         return flatten
