@@ -10,7 +10,7 @@ import tensorflow as tf
 import librosa
 
 from src.evaluate.config import *
-from src.evaluate.prepare_audio import FeatureGenerator
+from src.crnn_denoising.features import FeatureInputGenerator
 from src.evaluate.restore_audio import AudioRestorer
 
 noisy_audio_files = glob(NOISY_TEST + '*.wav')
@@ -19,7 +19,7 @@ shuffle(noisy_audio_files)
 
 model = tf.keras.models.load_model('src/cnn_denoising/models/speech_model.h5')
 
-generator = FeatureGenerator()
+generator = FeatureInputGenerator()
 audio_restorer = AudioRestorer()
 
 pesq_array = list()
@@ -28,8 +28,10 @@ stoi_array = list()
 for audios in noisy_audio_files[:10]:
     x_audio = generator.start_preprocess(audios)
     results = model.predict(x_audio)    
+    
     audio = audio_restorer.revert_features_to_audio(results, generator.audio_phase, generator.mean, generator.std)
-    audio_restorer.write_audio(audio, os.path.basename(audios))
+    # audio_restorer.write_audio(audio, os.path.basename(audios))
+    
     clean, _ = librosa.load(os.path.join(CLEAN_TEST, os.path.basename(audios)), sr=SAMPLE_RATE)
     div_fac = 1 / np.max(np.abs(clean)) / 3.0
     clean = clean * div_fac

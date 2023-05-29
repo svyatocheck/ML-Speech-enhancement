@@ -37,12 +37,9 @@ def execute_main():
     test_files = glob(f'{DATA_PATH}/input/noisy_test/*.wav')
     random.shuffle(test_files)
     test_files = test_files[:test_size]
+    
     x_test, y_test = prepare_data(generator, test_files)
-    #model.show_architecture()
-
     model.evaluate(x_test, y_test)
-
-    # model.save() # WanDB saves model automatically
 
 
 if __name__ == '__main__':

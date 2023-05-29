@@ -15,17 +15,13 @@ def mix_audio(speech, noise, snr):
     '''Наложение исходного аудио на шум.
     SNR: 0 - 40'''
     noise = noise[np.arange(len(speech)) % len(noise)]
-
     noise = noise.astype(np.float32)
     speech = speech.astype(np.float32)
-
     signal_energy = np.mean(speech**2)
     noise_energy = np.mean(noise**2)
-
     g = np.sqrt(10.0 ** (-snr/10) * signal_energy / noise_energy)
     a = np.sqrt(1 / (1 + g**2))
     b = np.sqrt(g**2 / (1 + g**2))
-
     return a * speech + b * noise
 
 
@@ -33,8 +29,7 @@ def read_audio_file(audio_file, sample_rate):
     '''Загрузка и нормализация аудио'''
     audio, _ = librosa.load(audio_file, sr=sample_rate)
     audio, _ = librosa.effects.trim(audio)
-    div_fac = 1 / np.max(np.abs(audio)) / 3.0
-    audio = audio * div_fac
+    audio = librosa.util.normalize(audio)
     return audio
 
 
@@ -63,7 +58,7 @@ def audio_preparation(speech_files, noise_files, result_path, size):
                 continue
 
             # make audio noisy, change SNR value here
-            audio = mix_audio(audio, noise, random.randrange(0, 30, 10))
+            audio = mix_audio(audio, noise, random.randrange(0, 50, 10))
 
             fileName_absolute = os.path.splitext(os.path.basename(items))[0]
             filename_full = f'{result_path}{fileName_absolute}.wav'
@@ -75,9 +70,9 @@ def audio_preparation(speech_files, noise_files, result_path, size):
 
 
 def execute_main():
-    speech_files = glob(f'{SPEECH_DATASET}*.mp3') + glob(f'{CLEAN_TRAIN}*.wav')
+    speech_files = glob(f'{CLEAN_TRAIN}*.wav')
     noise_files = glob(f'{NOISE_TRAIN}*/*.wav')
-    audio_preparation(speech_files, noise_files, RESULT_DATASET_TRAIN, 20000)
+    audio_preparation(speech_files, noise_files, RESULT_DATASET_TRAIN, 3000)
 
     speech_files = glob(f'{CLEAN_TEST}*.wav')
     noise_files = glob(f'{NOISE_TEST}*.wav')

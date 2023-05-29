@@ -13,6 +13,7 @@ src/crnn_denoising/models/variables/variables.data-00000-of-00001
 src/crnn_denoising/models/variables/variables.index
 src/crnn_denoising/models/assets/
 src/crnn_denoising/models/variables/
+src/crnn_denoising/cnn_model.ipynb
 
 # Secret file
 .env
