@@ -15,6 +15,7 @@ src/crnn_denoising/models/assets/
 src/crnn_denoising/models/variables/
 src/crnn_denoising/cnn_model.ipynb
 
+
 # Secret file
 .env
 speech_older_env/
