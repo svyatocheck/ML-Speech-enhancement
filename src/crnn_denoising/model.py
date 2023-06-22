@@ -1,10 +1,12 @@
-import wandb
-from src.crnn_denoising.config import *
-from wandb.keras import WandbMetricsLogger, WandbModelCheckpoint
-import tensorflow as tf
-import numpy as np
 import math
 import os
+
+import numpy as np
+import tensorflow as tf
+from wandb.keras import WandbMetricsLogger, WandbModelCheckpoint
+
+import wandb
+from src.crnn_denoising.config import *
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -12,7 +14,7 @@ tf.random.set_seed(999)
 np.random.seed(999)
 
 
-class SpeechModel:
+class CRNN_Model:
 
     def __init__(self) -> None:
         self._define_wandb_config()
@@ -124,7 +126,7 @@ class SpeechModel:
         return lrate
 
 
-    def _compile(self, scratch=False, path_to_previous=""):
+    def _compile(self, scratch=False, path_to_previous="src/crnn_denoising/models/speech_model.h5"):
         """
         Compile model instance.
         :param scratch: create new or use existing model

@@ -19,6 +19,7 @@ src/crnn_denoising/cnn_model.ipynb
 # Secret file
 .env
 speech_older_env/
+speech_env/
 wandb/
 artifacts/
 __pycache__/

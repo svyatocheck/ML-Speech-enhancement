@@ -2,7 +2,7 @@ import numpy as np
 import soundfile as sf
 from librosa import istft
 
-from src.evaluate.config import *
+from src.crnn_denoising.config import *  # CRNN's config used
 
 
 class AudioRestorer:
