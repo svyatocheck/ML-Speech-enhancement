@@ -1,5 +1,5 @@
 
-# CNN for speech denoising
+# CNN & CRNN for Speech Denoising
 Домашнее задание по курсу [My First Data Project](https://ods.ai/tracks/my_first_data_project).
 
 Основная цель представленного проекта - решить задачу очистки речи от фоновых шумов, используя технологии машинного обучения.
